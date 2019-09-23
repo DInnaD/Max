@@ -17,9 +17,10 @@ have to union {{host}}/api/organization/1 and {{host}}/api/vacancy/{{id}}/worker
 
 PS: thanks for my interesting weekend with Lara, Pyro, Pure Developers and uncount number of chats. Woohoo and I catch your BUG in the {{host}}/api/organization/1?vacancies=2&workers=1
 
-## my response:
+## my response which was wrong. Now it is ok:
 {{host}}/api/organization/2?vacancies=1&workers=1
 {
+    "success": true,
     "data": {
         "id": "2",
         "title": "Rerum adipisci dolore rerum.",
@@ -84,6 +85,7 @@ PS: thanks for my interesting weekend with Lara, Pyro, Pure Developers and uncou
 ## my response for vacancy=2 if we dont have no "active" neither "close" but your response have a BUG in it:
 {{host}}/api/organization/2?vacancies=2&workers=1
 {
+    "success": true,
     "data": {
         "id": "2",
         "title": "Rerum adipisci dolore rerum.",
