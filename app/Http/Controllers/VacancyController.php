@@ -67,7 +67,7 @@ class VacancyController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('index', Vacancy::class);
+        //$this->authorize('index', Vacancy::class);
         $only_active = $request->input('only_active');
         $vacancies = \App\Http\Resources\VacancyCollection::make(Vacancy::all());
         $vacancies = $vacancies->filter(function ($value) use ($only_active) {
@@ -93,7 +93,7 @@ class VacancyController extends Controller
      */
     public function store(VacancyRequest $request)
     {
-        $this->authorize('store', Vacancy::class);
+        //$this->authorize('store', Vacancy::class);
         $vacancy = Vacancy::create($request->all());
         return response()->json([ 'success' => true, 'data' => $vacancy], 201);
         
@@ -122,7 +122,7 @@ class VacancyController extends Controller
      */
     public function update(VacancyRequest $request, Vacancy $vacancy)
     {
-        $this->authorize('update', Vacancy::class);
+        //$this->authorize('update', Vacancy::class);
         $vacancy->update($request->all());
         return response()->json(['success' => true, 'data' => $vacancy], 200);
         
@@ -136,7 +136,7 @@ class VacancyController extends Controller
     public function destroy(Request $request, Vacancy $vacancy)
     {
         
-        $this->authorize('delete', Vacancy::class);
+        //$this->authorize('delete', Vacancy::class);
         $vacancy->delete();
         return response()->json(null, 200);
         
