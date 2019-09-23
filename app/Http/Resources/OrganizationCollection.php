@@ -14,13 +14,6 @@ class OrganizationCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        /**
-         * Transform the resource collection into an array.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return array
-         */
-       
             return [
                 'success' => true,
                 'data' => $this->collection,
