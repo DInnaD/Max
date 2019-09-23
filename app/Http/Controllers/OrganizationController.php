@@ -30,7 +30,7 @@ class OrganizationController extends Controller
 
     public function indexStats(Request $request)
     {
-        $this->authorize('indexStats', Organization::class);
+        //$this->authorize('indexStats', Organization::class);
         $organizations = \App\Http\Resources\UserCollection::make(User::all());
         $all = $organizations->count();
         $active = count($organizations->where('deleted_at', '=', null)->all());
@@ -50,7 +50,7 @@ class OrganizationController extends Controller
      */
     public function store(OrganizationRequest $request)
     {
-        $this->authorize('store', Organization::class);
+        //$this->authorize('store', Organization::class);
         $organization = Organization::create($request->all());
         return response()->json(['success' => $organization], 201);
         
@@ -123,7 +123,7 @@ class OrganizationController extends Controller
      */
     public function update(Request $request, Organization $organization)
     {
-            $this->authorize('update', Organization::class);
+            //$this->authorize('update', Organization::class);
             $organization->update($request->all());
             return response()->json(['success' => true, 'data' => $organization]);
         
@@ -137,7 +137,7 @@ class OrganizationController extends Controller
      */
     public function destroy(Request $request, Organization $organization)
     {
-            $this->authorize('delete', Organization::class);
+            //$this->authorize('delete', Organization::class);
             return response()->json(['success' => $organization->delete()], 200);
         
     }
