@@ -94,7 +94,7 @@ class OrganizationController extends Controller
                         unset($vacancies[$key]);
                     }
                 } elseif ($_vacancies == 3) {
-                    if ($vacancy->workers_amount <= $vacancy->workers_booked && $vacancy->workers_amount > $vacancy->workers_booked) {
+                    if ($vacancy->workers_amount <= $vacancy->workers_booked || $vacancy->workers_amount > $vacancy->workers_booked) {
                         unset($vacancies[$key]);
                     }
                 }
