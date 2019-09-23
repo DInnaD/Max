@@ -25,7 +25,7 @@ class OrganizationController extends Controller
     {
         $this->authorize('index', Organization::class);
         $organizations = \App\Http\Resources\OrganizationCollection::make(Organization::all());
-        return response()->json(['success' => true, 'data' => $organizations], 200);
+        return response()->json([$organizations], 200);
     }
 
     public function indexStats(Request $request)
