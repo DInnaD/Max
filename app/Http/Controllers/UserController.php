@@ -16,13 +16,8 @@ class UserController extends Controller
 {   
     public function index(Request $request)
     {
-        $search = $request->get('search');
-        $users = User::where('first_name', 'LIKE', '%'.$search.'%')
-            ->orWhere('last_name', 'LIKE', '%'.$search.'%')
-            ->orWhere('country', 'LIKE', '%'.$search.'%')
-            ->orWhere('city', 'LIKE', '%'.$search.'%')
-            ->get();
-        return new UserCollection($users);
+        return new UserCollection(User::getSearchList($request));
+        
     }
     /**
      * Display a listing of the resource.
