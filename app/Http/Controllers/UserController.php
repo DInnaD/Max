@@ -15,18 +15,14 @@ use App\Http\Resources\UserResource;
 class UserController extends Controller
 {   
     public function index(Request $request)
-    {//not work I dont know why? HELP
-        //$this->authorize(User::class);
+    {
         $search = $request->get('search');
         $users = User::where('first_name', 'LIKE', '%'.$search.'%')
-            ->where('last_name', 'LIKE', '%'.$search.'%')
-            ->where('country', 'LIKE', '%'.$search.'%')
-            ->where('city', 'LIKE', '%'.$search.'%')
+            ->orWhere('last_name', 'LIKE', '%'.$search.'%')
+            ->orWhere('country', 'LIKE', '%'.$search.'%')
+            ->orWhere('city', 'LIKE', '%'.$search.'%')
             ->get();
-        return  response->json(UserCollection::collection($users));
-//         $users = \App\Http\Resources\UserCollection::make(User::paginate(10));
-//         return response()->json(['success' => true, 'data' => $users], 200);
-        
+        return new UserCollection($users);
     }
     /**
      * Display a listing of the resource.
