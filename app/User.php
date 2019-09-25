@@ -62,5 +62,15 @@ class User extends Authenticatable
         return $this->api_token;
     }
     
+    public static function getSearchList(Request $request)
+    {
+        $per_page = $request->input('per_page', 10);
+
+        $search = $request->get('search');
+       
+        return User::where('first_name', 'LIKE', '%'.$search.'%')
+            ->orWhere('last_name', 'LIKE', '%'.$search.'%')
+            ->orWhere('country', 'LIKE', '%'.$search.'%')
+            ->orWhere('city', 'LIKE', '%'.$search.'%')->get();
     
 }
