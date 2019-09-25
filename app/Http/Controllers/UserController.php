@@ -19,11 +19,11 @@ class UserController extends Controller
         //$this->authorize(User::class);
         $search = $request->get('search');
         $users = User::where('first_name', 'LIKE', '%'.$search.'%')
-            ->orWhere('last_name', 'LIKE', '%'.$search.'%')
-            ->orWhere('country', 'LIKE', '%'.$search.'%')
-            ->orWhere('city', 'LIKE', '%'.$search.'%')
+            ->where('last_name', 'LIKE', '%'.$search.'%')
+            ->where('country', 'LIKE', '%'.$search.'%')
+            ->where('city', 'LIKE', '%'.$search.'%')
             ->get();
-        return new UserCollection($users);
+        return  response->json(UserCollection::collection($users));
 //         $users = \App\Http\Resources\UserCollection::make(User::paginate(10));
 //         return response()->json(['success' => true, 'data' => $users], 200);
         
