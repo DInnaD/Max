@@ -22,8 +22,9 @@ class VacancyResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'vacancy_name'  => $this->vacancy_name,  
-            'status' => $this->status,       
+            'id' => $this->id,  
+            'status' => $this->status,
+            'vacancy_name'  => $this->vacancy_name,       
             'workers_amount' => $this->workers_amount,
             'workers_booked' => $this->workers_booked,
             'salary' => $this->salary,
