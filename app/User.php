@@ -72,21 +72,6 @@ class User extends Authenticatable
             ->orWhere('city', 'LIKE', '%'.$search.'%')->get();
     }
     
-    public static function getRoleList()
-    {
-       $users = User::all();
-
-       $worker = $users->filter(function ($value){
-            return $value->role == 'worker';
-       })->count();
-       $employer = $users->filter(function ($value){
-            return $value->role == 'employer';
-       })->count();
-       $admin = $users->filter(function ($value){
-            return $value->role == 'admin';
-       })->count();
-        $user = collect(['worker' =>  $worker, 'employer' => $employer, 'admin' => $admin]);
-        return $user;
-    }
+    
     
 }
