@@ -64,7 +64,8 @@ class User extends Authenticatable
     
     public static function getSearchList(Request $request)
     {
-        $search = $request->get('search');
+        $search = $request->get('search');        
+        $search = $search ? '%' . $search . '%' : null;
        
         return User::where('first_name', 'LIKE', '%'.$search.'%')
             ->orWhere('last_name', 'LIKE', '%'.$search.'%')
