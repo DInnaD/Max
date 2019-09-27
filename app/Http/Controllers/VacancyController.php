@@ -18,17 +18,8 @@ class VacancyController extends Controller
     public function book(BookRequest $request)
     {
         //$this->authorize('book', Vacancy::class);
-        $id = \Auth::user()->id;
-        $vacancyId = $request->post('vacancy_id');
-        $userId = $request->post('user_id');
-        $vacancy = Vacancy::find($vacancyId);
-        $users = $vacancy->workers;
-        foreach ($users as $user){
-            if($user->id == $id){
-                return response()->json(['success' => false, 'error' => 'User Booked!'], 200);
-            }
-        }
-        $vacancy->workers()->attach($userId);
+        $vacancy = Vacancy::getBook($request);
+        
         return response()->json([
             'succes' => true,
         ], 200);
@@ -36,27 +27,21 @@ class VacancyController extends Controller
     
     public function unbook(BookRequest $request)
     {
-            //$this->authorize('unbook', Vacancy::class);
-            $vacancyId = $request->get('vacancy_id');
-            $userId = $request->post('user_id');
-            $vacancy = Vacancy::find($vacancyId);
-            $vacancy->workers()->detach($userId);
+            //$this->authorize('unbook', Vacancy::class);            
+            $vacancy = Vacancy::getUnbook($request);
 
-            return response()->json(['success' => true], 200);
+            return response()->json([
+                'success' => true,
+            ], 200);
        
     }
 
     public function indexStats(Request $request)
     {
-            $this->authorize('indexStats', Vacancy::class);
-            $vacancies = \App\Http\Resources\VacancyCollection::make(Vacancy::all());
-            $all = $vacancies->count();
-            $closed = $vacancies->filter(function ($value){
-                return $value->workers_booked > $value->workers_amount;
-            })->count();
-            $active = $all - $closed;
-            $vacancy = collect(['active' =>  $active, 'closed' => $closed, 'all' => $all]);
-            return response()->json(['success' => true, 'data ' => $vacancy], 200);
+        $this->authorize('indexStats', Vacancy::class);
+        $vacancy = Vacancy::getVacancyList($request);
+        
+        return response()->json(['success' => true, 'data' => $vacancy], 200);
     }
 
 
@@ -68,21 +53,9 @@ class VacancyController extends Controller
     public function index(Request $request)
     {
         //$this->authorize('index', Vacancy::class);
-        $only_active = $request->input('only_active');
-        $vacancies = \App\Http\Resources\VacancyCollection::make(Vacancy::all());
-        $vacancies = $vacancies->filter(function ($value) use ($only_active) {
-            if ($only_active != false) {
-                if ($value->workers_booked < $value->workers_amount) {
-                    return $value;
-                }
-            } else {
-                return $value;
-            }
-        }); 
-        return response()->json([ 'success' => true, 'data ' => $vacancies], 200);//make($vacancies)
-    
-      
+        $vacancies = Vacancy::getIndexList($request);
         
+        return new VacancyCollection($vacancies);   
     }
    
     /**
@@ -95,12 +68,13 @@ class VacancyController extends Controller
     {
         //$this->authorize('store', Vacancy::class);
         $vacancy = Vacancy::create($request->all());
-        return response()->json([ 'success' => true, 'data' => $vacancy], 201);
+        
+        return new VacancyResource($vacancy);
         
     }
      
     
-    public function show(Vacancy $vacancy, Organization $organization, User $user)
+    public function show(Vacancy $vacancy, User $user)
     {
         
         // $this->authorize('show', Vacancy::class);
@@ -108,9 +82,7 @@ class VacancyController extends Controller
         $vacancy->workers_booked = count($vacancy->workers()->get());
         
         return new VacancyResource($vacancy);
-        // return response()->json(['success' => true, 
-        // 'data' => $vacancy->load('organization')->load('workers'),
-        // ], 200);
+        
         
     }
     /**
@@ -124,7 +96,8 @@ class VacancyController extends Controller
     {
         //$this->authorize('update', Vacancy::class);
         $vacancy->update($request->all());
-        return response()->json(['success' => true, 'data' => $vacancy], 200);
+        
+        return new VacancyResource($vacancy);
         
     }//call to undef user() but work after added to workers()  'id' + add VacancyRequest
     /**
@@ -138,7 +111,8 @@ class VacancyController extends Controller
         
         //$this->authorize('delete', Vacancy::class);
         $vacancy->delete();
-        return response()->json(null, 200);
+        
+        return new VacancyResource($vacancy);
         
     }
     
