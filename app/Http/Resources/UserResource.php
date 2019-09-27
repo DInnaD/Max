@@ -12,6 +12,13 @@ class UserResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+    public function with($request)
+    {
+        return [
+            'success' => true,
+        ];
+    }
+    
     public function toArray($request)
     {
         return [
