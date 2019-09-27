@@ -46,5 +46,14 @@ class Organization extends Model
         return $this->hasManyThrough('App\User' ,'App\Vacancy');
     }
 
+    
 
+    public static function getOrganizationList(Request $request)
+    {
+        $organizations = \App\Http\Resources\UserCollection::make(User::all());
+        $all = $organizations->count();
+        $active = count($organizations->where('deleted_at', '=', null)->all());
+        $softDelete = $all - $active;
+        return $organization = collect(['active' =>  $active, 'softDelete' => $softDelete, 'all' => $all]);
+    }
 }
