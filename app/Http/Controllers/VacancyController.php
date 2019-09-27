@@ -106,7 +106,7 @@ class VacancyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Vacancy $vacancy)
+    public function destroy(Vacancy $vacancy)
     {
         
         //$this->authorize('delete', Vacancy::class);
