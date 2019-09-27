@@ -25,21 +25,16 @@ class OrganizationController extends Controller
     {
         $this->authorize('index', Organization::class);
         $organizations = \App\Http\Resources\OrganizationCollection::make(Organization::all());
-        return response()->json([$organizations], 200);
+        
+        return new OrganizationCollection($organizations);
     }
 
     public function indexStats(Request $request)
     {
         //$this->authorize('indexStats', Organization::class);
-        $organizations = \App\Http\Resources\UserCollection::make(User::all());
-        $all = $organizations->count();
-        $active = count($organizations->where('deleted_at', '=', null)->all());
-        $softDelete = $all - $active;
-        $organization = collect(['active' =>  $active, 'softDelete' => $softDelete, 'all' => $all]);
-            return response()->json(['success' => true, 'data' => $organization], 200);
-
-        $organizations = \App\Http\Resources\OrganizationCollection::make(User::all())->count();
-        return response()->json(['success' => true, $organizations], 200);
+        $organization = Organization::getOrganizationList($request);
+        
+        return response()->json(['success' => true, 'data' => $organization], 200);
     }
 
     /**
@@ -52,7 +47,8 @@ class OrganizationController extends Controller
     {
         //$this->authorize('store', Organization::class);
         $organization = Organization::create($request->all());
-        return response()->json(['success' => $organization], 201);
+        
+        return new OrganizationResource($organization);
         
     }
 
@@ -121,11 +117,12 @@ class OrganizationController extends Controller
      * @param  \App\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Organization $organization)
+    public function update(OrganizationRequest $request, Organization $organization)
     {
-            //$this->authorize('update', Organization::class);
-            $organization->update($request->all());
-            return response()->json(['success' => true, 'data' => $organization]);
+        //$this->authorize('update', Organization::class);
+        $organization->update($request->all());
+        
+        return new OrganizationResource($organization);
         
     }
 
@@ -135,10 +132,12 @@ class OrganizationController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Organization $organization)
+    public function destroy(Organization $organization)
     {
-            //$this->authorize('delete', Organization::class);
-            return response()->json(['success' => $organization->delete()], 200);
+        //$this->authorize('delete', Organization::class);
+        $organization->delete();
+        
+        return new OrganizationResource($organization);
         
     }
 
