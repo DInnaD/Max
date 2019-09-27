@@ -64,13 +64,29 @@ class User extends Authenticatable
     
     public static function getSearchList(Request $request)
     {
-        $per_page = $request->input('per_page', 10);
-
         $search = $request->get('search');
        
         return User::where('first_name', 'LIKE', '%'.$search.'%')
             ->orWhere('last_name', 'LIKE', '%'.$search.'%')
             ->orWhere('country', 'LIKE', '%'.$search.'%')
             ->orWhere('city', 'LIKE', '%'.$search.'%')->get();
+    }
+    
+    public static function getRoleList()
+    {
+       $users = User::all();
+
+       $worker = $users->filter(function ($value){
+            return $value->role == 'worker';
+       })->count();
+       $employer = $users->filter(function ($value){
+            return $value->role == 'employer';
+       })->count();
+       $admin = $users->filter(function ($value){
+            return $value->role == 'admin';
+       })->count();
+        $user = collect(['worker' =>  $worker, 'employer' => $employer, 'admin' => $admin]);
+        return $user;
+    }
     
 }
