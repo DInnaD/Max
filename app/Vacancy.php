@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vacancy extends Model
 { 
-    //use SostDeletes;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +16,6 @@ class Vacancy extends Model
      * @var array
      */
 
-   // protected $dates = ['deleted_at'];
     protected $hidden = [
         'api_token', 'deleted_at', 'pivot'
     ];
