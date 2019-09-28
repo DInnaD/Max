@@ -15,12 +15,9 @@ use Illuminate\Support\Str;
 class User extends Authenticatable
 {
     use Notifiable, Softdeletes;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    
+    /******* Properties *******/
+    
     protected $fillable = [ 
         'email', 
         'password',
@@ -31,19 +28,13 @@ class User extends Authenticatable
         'phone',
         'role',
     ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-
-    //protected $dates = ['deleted_at'];
-
+    
     protected $hidden = [
         'password', 'remember_token', 'api_token', 'deleted_at', 'pivot'
     ];
-
+    
+    /******* Relations *******/
+    
     public function vacancies()
         {
         return $this->belongsToMany(Vacancy::class);
@@ -61,6 +52,8 @@ class User extends Authenticatable
 
         return $this->api_token;
     }
+    
+    /******* Getters *******/
     
     public static function getSearchList(Request $request)
     {
