@@ -5,7 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+/**
+ * @property  int organization_id
+ */
 class Vacancy extends Model
 { 
     use SoftDeletes;
@@ -16,14 +18,17 @@ class Vacancy extends Model
      * @var array
      */
 
-    protected $hidden = [
-        'api_token', 'deleted_at', 'pivot'
-    ];
+    /******* Properties *******/
+    
     protected $fillable = [ 
         'vacancy_name',           
         'workers_amount',
         'organization_id',
         'salary',
+    ];    
+    
+    protected $hidden = [
+        'api_token', 'deleted_at', 'pivot'
     ];
 
      /**
@@ -40,7 +45,8 @@ class Vacancy extends Model
         'status',
         'workers_booked',
          ];
-
+    
+     /******* Relations *******/
     
     public function workers()
     {
@@ -51,7 +57,9 @@ class Vacancy extends Model
     {
     	return $this->belongsTo('App\Organization');
     }
-
+    
+     /******* Getters *******/
+    
     public function getWorkersBookedAttribute()
     {        
         $workers_booked = $this->workers()->count();
@@ -68,6 +76,8 @@ class Vacancy extends Model
         return 'active';
         
     }
+    
+     /******* Static Functions *******/
     
     public static function getVacancyList(Request $request)
     {
