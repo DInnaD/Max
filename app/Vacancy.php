@@ -12,12 +12,6 @@ class Vacancy extends Model
 { 
     use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-
     /******* Properties *******/
     
     protected $fillable = [ 
@@ -31,11 +25,6 @@ class Vacancy extends Model
         'api_token', 'deleted_at', 'pivot'
     ];
 
-     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'workers_booked' => 'boolean',
         'status' => 'string',
