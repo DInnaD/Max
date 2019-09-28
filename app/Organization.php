@@ -5,17 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+/**
+* @property  int creator_id
+*/
 
 class Organization extends Model
 {
     use SoftDeletes;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    
+     /******* Properties *******/
 
-    //protected $dates = ['deleted_at'];
     protected $hidden = [
         'api_token', 'deleted_at', 'pivot'
     ];
@@ -25,12 +24,8 @@ class Organization extends Model
         'city',
         'creator_id'
     ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+    
+     /******* Relations *******/
 
     public function creator()
     {
@@ -46,7 +41,7 @@ class Organization extends Model
         return $this->hasManyThrough('App\User' ,'App\Vacancy');
     }
 
-    
+     /******* Static Functions *******/
 
     public static function getOrganizationList(Request $request)
     {
